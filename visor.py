@@ -38,37 +38,12 @@ noses= {
 
 import warnings
 
-def color_format_warning(msg, category, filename, lineno, line=None): #Also from ChatGPT
-    color = color_map.get(category, "\033[0m")
-    return f"{color}{category.__name__}: {msg}{"\033[0m"}\n"
-
-warnings.formatwarning = color_format_warning
-
-class SevereWarning(Warning):
-    pass
-
-class InfoWarning(Warning):
-    pass
-
-class MismatchWarning(Warning):
-    pass
-
-
-color_map = {
-    SevereWarning: "\033[91m",
-    InfoWarning: "\033[93m",
-    MismatchWarning: "\033[95m"
-}
-
-lib_avb = False
-
 try:
     import neopixel as np
     import board as bd
-    lib_avb = True
 except ImportError:
 
-    warnings.warn("NeoPixels library or board library couldn't be imported — but dev mode is enabled", InfoWarning)
+    warnings.warn("\033[93m NeoPixels library or board library couldn't be imported — but dev mode is enabled \033[0m")
 
     # Fake NeoPixel class
     class FakeNeoPixelStrip(list):
@@ -89,7 +64,6 @@ except ImportError:
 
     np = FakeNeoPixelModule
     bd = FakeBoard
-    lib_avb = True
 
 mouth_pin = bd.D1
 eye_pin = bd.D2
@@ -101,15 +75,15 @@ def emotion_len_checker(prin=False): #checks to ensure the emotions are the corr
         print("Running self check")
     for emotion, lisst in mouths.items():
         if len(lisst) != mouth_len:
-            warnings.warn(f"Mouth emotion '{emotion}' has incorrect size: expected {mouth_len}, got {len(lisst)}", MismatchWarning)
+            warnings.warn(f"\033[95m Mouth emotion '{emotion}' has incorrect size: expected {mouth_len}, got {len(lisst)} \033[0m")
             ok = False
     for emotion, lisst in eyes.items():
         if len(lisst) != eye_len:
-            warnings.warn(f"Eye emotion '{emotion}' has incorrect size: expected {eye_len}, got {len(lisst)}", MismatchWarning)
+            warnings.warn(f"\033[95m Eye emotion '{emotion}' has incorrect size: expected {eye_len}, got {len(lisst)} \033[0m")
             ok = False
     for emotion, lisst in noses.items():
         if len(lisst) != nose_len:
-            warnings.warn(f"Nose emotion '{emotion}' has incorrect size: expected {nose_len}, got {len(lisst)}", MismatchWarning)
+            warnings.warn(f"\033[95m Nose emotion '{emotion}' has incorrect size: expected {nose_len}, got {len(lisst)} \033[0m")
             ok = False
     if ok and prin:
         print("Self check passed with no errors")
@@ -190,7 +164,4 @@ def load_class():
 if __name__ == '__main__': #if its imported it just acts like a library, but if its run it dose self checks yay
     emotion_len_checker(True)
 else:
-    if lib_avb:
-        ProtogenFaceRenderer = load_class()
-    else:
-        raise ImportError("ProtogenFaceRenderer not loaded because neopixel/board unavailable and dev mode is off.")
+    ProtogenFaceRenderer = load_class()
