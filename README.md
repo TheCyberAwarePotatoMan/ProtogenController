@@ -7,7 +7,7 @@ A work-in-progress **Protogen controller** for controlling visors, LEDs, and mor
 ## Features (so far)
 
 * Control mouth, eyes, and nose LEDs via emotion masks
-* Dev mode support so you can test without a Raspberry Pi
+* Library emulation to test without raspberry pi
 
 ## Planned Contributions / TODO
 
@@ -15,7 +15,7 @@ A work-in-progress **Protogen controller** for controlling visors, LEDs, and mor
 * Add advanced animations for the visor (possibly idfk)
 * Make a README that actually explains stuff
 * Add NFC communication
-* Live video using camera + small drone goggles (HUD would be sick)
+* Live video using camera + small drone goggles (HUD)
 
 If you want to help, **submit a pull request** or **open an issue**!
 

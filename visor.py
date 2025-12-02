@@ -1,12 +1,11 @@
-DEV_MODE = True
-
+#!/usr/bin/env python3
 #So i put all of these up here for easy accses but i cant do the pins becouse we need to first import the other librarys so here we are
 
 mouth_len = 3
 eye_len = 3
 nose_len = 3
 
-#Should make these like actully work or something idk, gotta make hardware first imagen the number represent an LED string (its like 12 at night cut me some slack)
+#Should make these like actully work or something idk, gotta make hardware first. imagen the number represent an LED string (its like 12 at night cut me some slack)
 mouths = {
      'normal': [1, 0, 0],
      'happy': [0, 1, 0],
@@ -68,32 +67,29 @@ try:
     import board as bd
     lib_avb = True
 except ImportError:
-    if DEV_MODE: #Will not lie stole this fake NeoPixel and Board class from ChatGPT
-        warnings.warn("NeoPixels library or board library couldn't be imported — but dev mode is enabled", InfoWarning)
 
-        # Fake NeoPixel class
-        class FakeNeoPixelStrip(list):
-            def __init__(self, pin, length):
-                super().__init__([(0, 0, 0)] * length)
-            def show(self):
-                pass  # does nothing
+    warnings.warn("NeoPixels library or board library couldn't be imported — but dev mode is enabled", InfoWarning)
 
-        # Fake module to mimic 'neopixel'
-        class FakeNeoPixelModule:
-            NeoPixel = FakeNeoPixelStrip
+    # Fake NeoPixel class
+    class FakeNeoPixelStrip(list):
+        def __init__(self, pin, length):
+            super().__init__([(0, 0, 0)] * length)
+        def show(self):
+            pass  # does nothing
 
-        # Fake board pins
-        class FakeBoard:
-            D1 = "D1"
-            D2 = "D2"
-            D3 = "D3"
+    # Fake module to mimic 'neopixel'
+    class FakeNeoPixelModule:
+        NeoPixel = FakeNeoPixelStrip
 
-        np = FakeNeoPixelModule
-        bd = FakeBoard
-        lib_avb = True
-    else:
-        lib_avb = False
-        warnings.warn("NeoPixels library or board library couldn't be imported — and dev mode is NOT enabled", SevereWarning)
+    # Fake board pins
+    class FakeBoard:
+        D1 = "D1"
+        D2 = "D2"
+        D3 = "D3"
+
+    np = FakeNeoPixelModule
+    bd = FakeBoard
+    lib_avb = True
 
 mouth_pin = bd.D1
 eye_pin = bd.D2
