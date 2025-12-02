@@ -11,8 +11,8 @@ A work-in-progress **Protogen controller** for controlling visors, LEDs, and mor
 
 ## Planned Contributions / TODO
 
-* Add actual emotion masks (make your Protogen expressive af)
-* Add advanced animations for the visor (possibly idfk, lol)
+* Add actual emotion masks
+* Add advanced animations for the visor (possibly idfk)
 * Make a README that actually explains stuff
 * Add NFC communication
 * Live video using camera + small drone goggles (HUD would be sick)
