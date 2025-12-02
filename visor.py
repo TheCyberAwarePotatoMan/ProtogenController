@@ -1,71 +1,12 @@
 DEV_MODE = True
 
-import warnings
-
-def color_format_warning(msg, category, filename, lineno, line=None):
-    color = color_map.get(category, "\033[0m")
-    return f"{color}{category.__name__}: {msg}{"\033[0m"}\n"
-
-warnings.formatwarning = color_format_warning
-
-class SevereWarning(Warning):
-    pass
-
-class InfoWarning(Warning):
-    pass
-
-class MismatchWarning(Warning):
-    pass
-
-
-color_map = {
-    SevereWarning: "\033[91m",
-    InfoWarning: "\033[93m",
-    MismatchWarning: "\033[95m"
-}
-
-lib_avb = False
-
-try:
-    import neopixel as np
-    import board as bd
-    lib_avb = True
-except ImportError:
-    if DEV_MODE:
-        warnings.warn("NeoPixels library or board library couldn't be imported — but dev mode is enabled", InfoWarning)
-
-        # Fake NeoPixel class
-        class FakeNeoPixelStrip(list):
-            def __init__(self, pin, length):
-                super().__init__([(0, 0, 0)] * length)
-            def show(self):
-                pass  # does nothing
-
-        # Fake module to mimic 'neopixel'
-        class FakeNeoPixelModule:
-            NeoPixel = FakeNeoPixelStrip
-
-        # Fake board pins
-        class FakeBoard:
-            D1 = "D1"
-            D2 = "D2"
-            D3 = "D3"
-
-        np = FakeNeoPixelModule
-        bd = FakeBoard
-        lib_avb = True
-    else:
-        lib_avb = False
-        warnings.warn("NeoPixels library or board library couldn't be imported — and dev mode is NOT enabled", SevereWarning)
-mouth_pin = bd.D1
-eye_pin = bd.D2
-nose_pin = bd.D3
+#So i put all of these up here for easy accses but i cant do the pins becouse we need to first import the other librarys so here we are
 
 mouth_len = 3
 eye_len = 3
 nose_len = 3
 
-#please update emotion looks when ready
+#Should make these like actully work or something idk, gotta make hardware first imagen the number represent an LED string (its like 12 at night cut me some slack)
 mouths = {
      'normal': [1, 0, 0],
      'happy': [0, 1, 0],
@@ -96,8 +37,69 @@ noses= {
      'xxx': [1, 1, 1]
      }
 
+import warnings
 
-def emotion_len_checker(prin=False):
+def color_format_warning(msg, category, filename, lineno, line=None): #Also from ChatGPT
+    color = color_map.get(category, "\033[0m")
+    return f"{color}{category.__name__}: {msg}{"\033[0m"}\n"
+
+warnings.formatwarning = color_format_warning
+
+class SevereWarning(Warning):
+    pass
+
+class InfoWarning(Warning):
+    pass
+
+class MismatchWarning(Warning):
+    pass
+
+
+color_map = {
+    SevereWarning: "\033[91m",
+    InfoWarning: "\033[93m",
+    MismatchWarning: "\033[95m"
+}
+
+lib_avb = False
+
+try:
+    import neopixel as np
+    import board as bd
+    lib_avb = True
+except ImportError:
+    if DEV_MODE: #Will not lie stole this fake NeoPixel and Board class from ChatGPT
+        warnings.warn("NeoPixels library or board library couldn't be imported — but dev mode is enabled", InfoWarning)
+
+        # Fake NeoPixel class
+        class FakeNeoPixelStrip(list):
+            def __init__(self, pin, length):
+                super().__init__([(0, 0, 0)] * length)
+            def show(self):
+                pass  # does nothing
+
+        # Fake module to mimic 'neopixel'
+        class FakeNeoPixelModule:
+            NeoPixel = FakeNeoPixelStrip
+
+        # Fake board pins
+        class FakeBoard:
+            D1 = "D1"
+            D2 = "D2"
+            D3 = "D3"
+
+        np = FakeNeoPixelModule
+        bd = FakeBoard
+        lib_avb = True
+    else:
+        lib_avb = False
+        warnings.warn("NeoPixels library or board library couldn't be imported — and dev mode is NOT enabled", SevereWarning)
+
+mouth_pin = bd.D1
+eye_pin = bd.D2
+nose_pin = bd.D3
+
+def emotion_len_checker(prin=False): #checks to ensure the emotions are the correct length for there led string
     ok = True
     if prin:
         print("Running self check")
@@ -125,7 +127,7 @@ def load_class():
                 self.eye=np.NeoPixel(eye_pin, eye_len)
                 self.nose=np.NeoPixel(nose_pin, nose_len)
 
-            def _render(self, strip, mask, color):
+            def _render(self, strip, mask, color): #loops over the LED's checks if the should be lit and if so sets them to the provided color
                 for i, active in enumerate(mask):
                     strip[i] = color if active else (0, 0, 0)
                 strip.show()
@@ -172,7 +174,7 @@ def load_class():
                 self._render(self.eye, eyes[Emotion], (Red, Green, Blue))
                 self._render(self.nose, noses[Emotion], (Red, Green, Blue))
             
-            def list_mouth_emotions(self):
+            def list_mouth_emotions(self): #lists the emotions
                 """Returns list of mouth emotions"""
                 return list(mouths.keys())
             
@@ -189,7 +191,7 @@ def load_class():
                 return emotion_len_checker()
     return ProtogenFaceRenderer
 
-if __name__ == '__main__':
+if __name__ == '__main__': #if its imported it just acts like a library, but if its run it dose self checks yay
     emotion_len_checker(True)
 else:
     if lib_avb:
