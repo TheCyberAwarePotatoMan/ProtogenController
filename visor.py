@@ -42,8 +42,7 @@ try:
     import neopixel as np
     import board as bd
 except ImportError:
-
-    warnings.warn("\033[93m NeoPixels library or board library couldn't be imported — but dev mode is enabled \033[0m")
+    warnings.warn("\033[93m NeoPixels library or board library couldn't be imported — Emulation mode active \033[0m")
 
     # Fake NeoPixel class
     class FakeNeoPixelStrip(list):
@@ -159,6 +158,7 @@ def load_class():
             def self_check(self):
                 """Returns True if emotions are correct length"""
                 return emotion_len_checker()
+                
     return ProtogenFaceRenderer
 
 if __name__ == '__main__': #if its imported it just acts like a library, but if its run it dose self checks yay
