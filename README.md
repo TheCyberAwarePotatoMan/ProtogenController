@@ -7,7 +7,6 @@ A work-in-progress **Protogen controller** for controlling visors, LEDs, and mor
 ## Features (so far)
 
 * Control mouth, eyes, and nose LEDs via emotion masks
-* Library emulation to test without raspberry pi
 
 ## Planned Contributions / TODO
 
