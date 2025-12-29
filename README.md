@@ -8,13 +8,17 @@ A work-in-progress **Protogen controller** for controlling visors, LEDs, and mor
 
 * Control mouth, eyes, and nose LEDs via emotion masks
 
+## Working On
+
+* Live video using camera + small drone goggles (HUD)
+
 ## Planned Contributions / TODO
 
 * Add actual emotion masks
 * Add advanced animations for the visor (possibly idfk)
 * Make a README that actually explains stuff
 * Add NFC communication
-* Live video using camera + small drone goggles (HUD)
+
 
 If you want to help, **submit a pull request** or **open an issue**!
 
